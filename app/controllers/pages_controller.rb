@@ -10,6 +10,9 @@ class PagesController < ApplicationController
     if params[:rozlad_skt] && params[:rozlad_skt] != 'all'
       main_query[params[:rozlad_skt]] = true
     end
+    if params[:skt_level] && params[:skt_level] != 'all'
+      main_query[:skt_level] = params[:skt_level]
+    end
 
     @main_children = Child.where(main_query.merge({group: 'main'})).order('id asc')
     @control_children = Child.where(control_query.merge({group: 'control'})).order('id asc')

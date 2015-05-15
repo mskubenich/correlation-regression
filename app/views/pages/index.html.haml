@@ -13,142 +13,170 @@
               Розлади ШКТ:
             %td{ style: 'padding: 2px'}
               = select_tag 'rozlad_skt', options_for_select([['Живіт', 'zhyvit'], ['Стул', 'stul'], ['УЗД', 'uzd'], ['ФПК/ДЖВШ', 'fpk'], ['Дисбактеріоз', 'disbakterioz'], ['Всі', 'all']], params[:rozlad_skt] || 'all'), class: 'form-control'
+          %tr
+            %td{ style: 'padding: 2px; text-align: right'}
+              Ступінь:
+            %td{ style: 'padding: 2px'}
+              = select_tag 'skt_level', options_for_select([['1', 1], ['2', 2], ['3', 3], ['Всі', 'all']], params[:skt_level] || 'all'), class: 'form-control'
         %br
         = submit_tag 'Порахувати', class: 'btn'
   .row
     .col-md-12
-      %h2 Основна група
-      %table.table.table-striped
-        %thead{ style: 'font-size: 9px'}
-          %tr
-            %th
-            %th
-            %th
-            %th{ colspan: 5 }
-              Розлади ШКТ
-            %th
-            %th{ colspan: 5 }
-              Обтяжена спадковість
-            %th{ colspan: 3 }
-              Фактор ризику
-          %tr
-            %th
-              ПІБ
-            %th
-              Вік
-            %th
-              Стать
-            %th
-              Живіт
-            %th
-              Стул
-            %th
-              УЗД
-            %th
-              ФПК/ДЖВШ
-            %th
-              Дисбактеріоз
-            %th
-              Ступінь
-            %th
-              ОС
-            %th
-              1 лінія
-            %th
-              2 лінія
-            %th
-              обидва батьки
-            %th
-              обидві лінії
-            %th
-              АР
-            %th
-              БА
-            %th
-              Респіраторному алергозу
-        %tbody
-        - @main_children.each do |child|
-          %tr
-            %td{ style: 'font-size: 9px'}
-              = child.name.split(' ')[0]
-            %td{ style: 'font-size: 9px'}
-              = child.age
-            %td{ style: 'font-size: 9px'}
-              = child.sex == 'male' ? 'xлопчик' : 'дівчинка'
-            %td
-              - if child.zhyvit
-                &#10004;
-            %td
-              - if child.stul
-                &#10004;
-            %td
-              - if child.uzd
-                &#10004;
-            %td
-              - if child.fpk
-                &#10004;
-            %td
-              - if child.disbakterioz
-                &#10004;
-            %td{ style: 'font-size: 9px'}
-              - if child.skt_level > 0
-                = child.skt_level
-            %td
-              - if child.spadkovist
-                &#10004;
-            %td
-              - if child.spadk_line1
-                &#10004;
-            %td
-              - if child.spadk_line2
-                &#10004;
-            %td
-              - if child.both_parents
-                &#10004;
-            %td
-              - if child.both_lines
-                &#10004;
-            %td
-              - if child.risk_factor_AR
-                &#10004;
-            %td
-              - if child.risk_factor_BA
-                &#10004;
-            %td
-              - if child.risk_factor_Rasp
-                &#10004;
+      %h4
+        %a{ 'data-toggle' => "collapse", 'data-target' => "#main", 'aria-expanded' => "false", 'aria-controls' => "main", style: 'cursor: pointer'}
+          Основна група
+      %div.collapse#main.in
+        %table.table.table-striped
+          %thead{ style: 'font-size: 9px'}
+            %tr
+              %th
+              %th
+              %th
+              %th{ colspan: 5 }
+                Розлади ШКТ
+              %th
+              %th{ colspan: 5 }
+                Обтяжена спадковість
+              %th{ colspan: 3 }
+                Фактор ризику
+            %tr
+              %th
+                ПІБ
+              %th
+                Вік
+              %th
+                Стать
+              %th
+                Живіт
+              %th
+                Стул
+              %th
+                УЗД
+              %th
+                ФПК/ДЖВШ
+              %th
+                Дисбактеріоз
+              %th
+                Ступінь
+              %th
+                ОС
+              %th
+                1 лінія
+              %th
+                2 лінія
+              %th
+                обидва батьки
+              %th
+                обидві лінії
+              %th
+                АР
+              %th
+                БА
+              %th
+                Респіраторному алергозу
+          %tbody
+          - @main_children.each do |child|
+            %tr
+              %td{ style: 'font-size: 9px'}
+                = child.name.split(' ')[0]
+              %td{ style: 'font-size: 9px'}
+                = child.age
+              %td{ style: 'font-size: 9px'}
+                = child.sex == 'male' ? 'xлопчик' : 'дівчинка'
+              %td
+                - if child.zhyvit
+                  &#10004;
+              %td
+                - if child.stul
+                  &#10004;
+              %td
+                - if child.uzd
+                  &#10004;
+              %td
+                - if child.fpk
+                  &#10004;
+              %td
+                - if child.disbakterioz
+                  &#10004;
+              %td{ style: 'font-size: 9px'}
+                - if child.skt_level > 0
+                  = child.skt_level
+              %td
+                - if child.spadkovist
+                  &#10004;
+              %td
+                - if child.spadk_line1
+                  &#10004;
+              %td
+                - if child.spadk_line2
+                  &#10004;
+              %td
+                - if child.both_parents
+                  &#10004;
+              %td
+                - if child.both_lines
+                  &#10004;
+              %td
+                - if child.risk_factor_AR
+                  &#10004;
+              %td
+                - if child.risk_factor_BA
+                  &#10004;
+              %td
+                - if child.risk_factor_Rasp
+                  &#10004;
     .col-md-12
-      %h2 Контрольна група
-      %table.table.table-striped
-        %thead{ style: 'font-size: 9px'}
-          %tr
-            %th
-            %th
-            %th
-            %th
-          %tr
-            %th
-              ПІБ
-            %th
-              Вік
-            %th
-              Стать
-            %th
-              ОС
-        %tbody
-        - @control_children.each do |child|
-          %tr
-            %td{ style: 'font-size: 9px'}
-              = child.name.split(' ')[0]
-            %td{ style: 'font-size: 9px'}
-              = child.age
-            %td{ style: 'font-size: 9px'}
-              = child.sex == 'male' ? 'xлопчик' : 'дівчинка'
-            %td
-              - if child.spadkovist
-                &#10004;
+      %h4
+        %a{ 'data-toggle' => "collapse", 'data-target' => "#control", 'aria-expanded' => "false", 'aria-controls' => "control", style: 'cursor: pointer'}
+          Контрольна група
+      %div.collapse#control
+        %table.table.table-striped
+          %thead{ style: 'font-size: 9px'}
+            %tr
+              %th
+              %th
+              %th
+              %th
+            %tr
+              %th
+                ПІБ
+              %th
+                Вік
+              %th
+                Стать
+              %th
+                ОС
+          %tbody
+          - @control_children.each do |child|
+            %tr
+              %td{ style: 'font-size: 9px'}
+                = child.name.split(' ')[0]
+              %td{ style: 'font-size: 9px'}
+                = child.age
+              %td{ style: 'font-size: 9px'}
+                = child.sex == 'male' ? 'xлопчик' : 'дівчинка'
+              %td
+                - if child.spadkovist
+                  &#10004;
 
-.container
-  .row
-    .col-md-12
-      content
+    .col-md-6
+      Основна група
+
+      %br
+      %b
+        Висновок: У
+        = 'дітей' if params[:sex] == 'all'
+        = 'хлопчиків' if params[:sex] == 'male'
+        = 'дівчаток' if params[:sex] == 'female'
+        - if params[:rozlad_skt] != 'all'
+          = { 'zhyvit' => 'з розладом живота', 'stul' => 'з розладом стулу', 'uzd' => 'з УЗД', 'fpk' => 'з ФПК/ДЖВШ', 'disbakterioz' => 'з дисбактеріозом'}[params[:rozlad_skt]]
+        - else
+          з розладом ШКТ
+        - if params[:skt_level] != 'all'
+          = "з #{ params[:skt_level] } ступенем"
+
+    .col-md-6
+      Контрольна група
+      %br
+      %b
+        Висновок:
