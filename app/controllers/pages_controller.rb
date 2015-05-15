@@ -12,7 +12,7 @@ class PagesController < ApplicationController
     end
     if params[:spadk] && params[:spadk] != 'all'
       main_query[params[:spadk]] = true
-      control_query[params[:spadk]] = true
+      control_query[params[:spadk]] = true if params[:spadk] == 'spadkovist'
     end
     if params[:risk] && params[:risk] != 'all'
       main_query[params[:risk]] = true
