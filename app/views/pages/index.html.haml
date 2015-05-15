@@ -1,41 +1,57 @@
 .container
   .row
-    .col-md-12
+    .col-md-6
       = form_tag home_path do
         %table
           %tr
-            %td{ style: 'padding: 2px; text-align: right'}
-              Стать:
-            %td{ style: 'padding: 2px'}
-              = select_tag 'sex', options_for_select([['Хлопчики', 'male'], ['Дівчатка', 'female'], ['Всі', 'all']], params[:sex] || 'all'), class: 'form-control'
-          %tr
-            %td{ style: 'padding: 2px; text-align: right'}
-              Розлади ШКТ:
-            %td{ style: 'padding: 2px'}
-              = select_tag 'rozlad_skt', options_for_select([['Живіт', 'zhyvit'], ['Стул', 'stul'], ['УЗД', 'uzd'], ['ФПК/ДЖВШ', 'fpk'], ['Дисбактеріоз', 'disbakterioz'], ['Всі', 'all']], params[:rozlad_skt] || 'all'), class: 'form-control'
-          %tr
-            %td{ style: 'padding: 2px; text-align: right'}
-              Ступінь:
-            %td{ style: 'padding: 2px'}
-              = select_tag 'skt_level', options_for_select([['1', 1], ['2', 2], ['3', 3], ['Всі', 'all']], params[:skt_level] || 'all'), class: 'form-control'
-          %tr
-            %td{ style: 'padding: 2px; text-align: right'}
-              Обтяжена спадковість:
-            %td{ style: 'padding: 2px'}
-              = select_tag 'spadk', options_for_select([['З обтяженою спадковістю', 'spadkovist'], ['1 лінія', 'spadk_line1'], ['2 лінія', 'spadk_line2'], ['обидва батьки', 'both_parents'], ['обидві лінії', 'both_lines'], ['Всі', 'all']], params[:spadk] || 'all'), class: 'form-control'
-          %tr
-            %td{ style: 'padding: 2px; text-align: right'}
-              Фактор ризику:
-            %td{ style: 'padding: 2px'}
-              = select_tag 'risk', options_for_select([['АР', 'risk_factor_AR'], ['БА', 'risk_factor_BA'], ['Респіраторному алергозу', 'risk_factor_Rasp'], ['Всі', 'all']], params[:risk] || 'all'), class: 'form-control'
-        %br
-        = submit_tag 'Порахувати', class: 'btn'
+            %td
+              %table
+                %tr
+                  %td{ style: 'padding: 2px; text-align: right'}
+                    Стать:
+                  %td{ style: 'padding: 2px'}
+                    = select_tag 'sex', options_for_select([['Хлопчики', 'male'], ['Дівчатка', 'female'], ['Всі', 'all']], params[:sex] || 'all'), class: 'form-control'
+                %tr
+                  %td{ style: 'padding: 2px; text-align: right'}
+                    Розлади ШКТ:
+                  %td{ style: 'padding: 2px'}
+                    = select_tag 'rozlad_skt', options_for_select([['Живіт', 'zhyvit'], ['Стул', 'stul'], ['УЗД', 'uzd'], ['ФПК/ДЖВШ', 'fpk'], ['Дисбактеріоз', 'disbakterioz'], ['Всі', 'all']], params[:rozlad_skt] || 'all'), class: 'form-control'
+                %tr
+                  %td{ style: 'padding: 2px; text-align: right'}
+                    Ступінь:
+                  %td{ style: 'padding: 2px'}
+                    = select_tag 'skt_level', options_for_select([['1', 1], ['2', 2], ['3', 3], ['Всі', 'all']], params[:skt_level] || 'all'), class: 'form-control'
+                %tr
+                  %td{ style: 'padding: 2px; text-align: right'}
+                    Обтяжена спадковість:
+                  %td{ style: 'padding: 2px'}
+                    = select_tag 'spadk', options_for_select([['З обтяженою спадковістю', 'spadkovist'], ['1 лінія', 'spadk_line1'], ['2 лінія', 'spadk_line2'], ['обидва батьки', 'both_parents'], ['обидві лінії', 'both_lines'], ['Всі', 'all']], params[:spadk] || 'all'), class: 'form-control'
+                %tr
+                  %td{ style: 'padding: 2px; text-align: right'}
+                    Фактор ризику:
+                  %td{ style: 'padding: 2px'}
+                    = select_tag 'risk', options_for_select([['АР', 'risk_factor_AR'], ['БА', 'risk_factor_BA'], ['Респіраторному алергозу', 'risk_factor_Rasp'], ['Всі', 'all']], params[:risk] || 'all'), class: 'form-control'
+              %br
+              = submit_tag 'Порахувати', class: 'btn'
+            %td{ style: 'vertical-align: top'}
+              %table
+                -#%tr
+                -#  %td
+                -#    Вивчити:
+                -#  %td
+                -#    = select_tag 'vyvchyty', options_for_select([['Розлади живота', 'zhyvit'], ['Розлади стулe', 'stul'], ['Розлади УЗД', 'uzd'], ['Розлади ФПК/ДЖВШ', 'fpk'], ['Дисбактеріоз', 'disbakterioz'], ['Всі розлади ШКТ', 'all']], params[:rozlad_skt] || 'all'), class: 'form-control'
+                %tr
+                  %td
+                    Вікові категорії по:
+                  %td
+                    = select_tag 'cohort', options_for_select((1..12).map{|i|["#{ i } місяців", i]}, params[:cohort] || 12), class: 'form-control'
+
   .row
     .col-md-12
       %h4
         %a{ 'data-toggle' => "collapse", 'data-target' => "#main", 'aria-expanded' => "false", 'aria-controls' => "main", style: 'cursor: pointer'}
           Основна група
-      %div.collapse#main.in
+      %div.collapse#main
         %table.table.table-striped
           %thead{ style: 'font-size: 9px'}
             %tr
@@ -170,7 +186,27 @@
                   &#10004;
 
     .col-md-6
-      Основна група
+      %b Основна група
+      %br
+      %table.au
+        %tr
+          %td
+            Група
+          %td
+            Вікові категорії
+          %td
+            Кількість випадків патологій ШКТ
+        - i = 0
+        - j = 0
+        - while i < @main_children.map(&:age).max
+          %tr
+            %td
+              = j += 1
+            %td
+              = "#{ i + 1 } - #{ i + params[:cohort].to_i }"
+            %td
+              = @main_children.select{|child| child.age >= (i + 1) && child.age <= i+params[:cohort].to_i }.count
+          - i += params[:cohort].to_i
 
       %br
       %b
@@ -193,12 +229,39 @@
         - if params[:risk] != 'all'
           з фактором ризику
           = { 'risk_factor_AR' => 'АР', 'risk_factor_BA' => 'БА', 'risk_factor_Rasp' => 'Респіраторному алергозу'}[params[:risk]]
+        кількість випадків
         %br
         %br
 
     .col-md-6
-      Контрольна група
+      %b Контрольна група
       %br
+      %br
+      %table.au
+        %tr
+          %td
+            Група
+          %td
+            Вікові категорії
+          %td
+            Кількість дітей без патології ШКТ
+        - i = 0
+        - j = 0
+        - while i < @control_children.map(&:age).max
+          %tr
+            %td
+              = j += 1
+            %td
+              = "#{ i + 1 } - #{ i + params[:cohort].to_i }"
+            %td
+              = @control_children.select{|child| child.age >= (i + 1) && child.age <= i+params[:cohort].to_i }.count
+          - i += params[:cohort].to_i
+      %br
+
+    .col-md-12
+      #container
+      :javascript
+        draw_chart();
       %b
         Висновок:
 
