@@ -1,0 +1,33 @@
+//= require_self
+//= require_tree .
+
+@import "bootstrap";
+
+body {
+  padding-top: 70px;
+}
+
+.pagination{
+  margin: 0;
+}
+
+.answer{
+  position:relative;
+  display: block;
+  border: 1px solid grey;
+  border-radius: 4px;
+  padding: 5px;
+  input{
+    display: none;
+  }
+  .rounded-one{
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    background-color: yellow;
+    border: 1px solid black;
+    top: 7px;
+    right: 7px;
+  }
+}
