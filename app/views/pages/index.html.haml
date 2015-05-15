@@ -18,6 +18,16 @@
               Ступінь:
             %td{ style: 'padding: 2px'}
               = select_tag 'skt_level', options_for_select([['1', 1], ['2', 2], ['3', 3], ['Всі', 'all']], params[:skt_level] || 'all'), class: 'form-control'
+          %tr
+            %td{ style: 'padding: 2px; text-align: right'}
+              Обтяжена спадковість:
+            %td{ style: 'padding: 2px'}
+              = select_tag 'spadk', options_for_select([['З обтяженою спадковістю', 'spadkovist'], ['1 лінія', 'spadk_line1'], ['2 лінія', 'spadk_line2'], ['обидва батьки', 'both_parents'], ['обидві лінії', 'both_lines'], ['Всі', 'all']], params[:spadk] || 'all'), class: 'form-control'
+          %tr
+            %td{ style: 'padding: 2px; text-align: right'}
+              Фактор ризику:
+            %td{ style: 'padding: 2px'}
+              = select_tag 'risk', options_for_select([['АР', 'risk_factor_AR'], ['БА', 'risk_factor_BA'], ['Респіраторному алергозу', 'risk_factor_Rasp'], ['Всі', 'all']], params[:risk] || 'all'), class: 'form-control'
         %br
         = submit_tag 'Порахувати', class: 'btn'
   .row
@@ -174,9 +184,24 @@
           з розладом ШКТ
         - if params[:skt_level] != 'all'
           = "з #{ params[:skt_level] } ступенем"
+        - if params[:spadk] != 'all'
+          з обтяженою спадковістю
+          - if params[:spadk] != 'spadkovist'
+            (
+            = { 'spadk_line1' => '1 лінія', 'spadk_line2' => '2 лінія', 'both_parents' => 'обидва батьки', 'both_lines' => 'обидві лінії'}[params[:spadk]]
+            )
+        - if params[:risk] != 'all'
+          з фактором ризику
+          = { 'risk_factor_AR' => 'АР', 'risk_factor_BA' => 'БА', 'risk_factor_Rasp' => 'Респіраторному алергозу'}[params[:risk]]
+        %br
+        %br
 
     .col-md-6
       Контрольна група
       %br
       %b
         Висновок:
+
+
+
+        ЧИ має значення вік, стать, обтяжена спадковість на розвиток патології ШКТ?

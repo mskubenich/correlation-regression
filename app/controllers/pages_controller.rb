@@ -10,6 +10,13 @@ class PagesController < ApplicationController
     if params[:rozlad_skt] && params[:rozlad_skt] != 'all'
       main_query[params[:rozlad_skt]] = true
     end
+    if params[:spadk] && params[:spadk] != 'all'
+      main_query[params[:spadk]] = true
+      control_query[params[:spadk]] = true
+    end
+    if params[:risk] && params[:risk] != 'all'
+      main_query[params[:risk]] = true
+    end
     if params[:skt_level] && params[:skt_level] != 'all'
       main_query[:skt_level] = params[:skt_level]
     end
