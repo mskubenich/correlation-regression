@@ -1,2 +1,177 @@
-%h1 Pages#index
-%p Find me in app/views/pages/index.html.haml
+%table.the-table{ style: 'margin: 0 auto'}
+  %tr
+    %td
+      %table.table.table-striped
+        %thead{ style: 'font-size: 9px'}
+          %tr
+            %th
+            %th
+            %th
+            %th{ colspan: 5 }
+              Розлади ШКТ
+            %th
+            %th{ colspan: 5 }
+              Обтяжена спадковість
+          %tr
+            %th
+              ПІБ
+            %th
+              Вік
+            %th
+              Стать
+            %th
+              Живіт
+            %th
+              Стул
+            %th
+              УЗД
+            %th
+              ФПК/ДЖВШ
+            %th
+              Дисбактеріоз
+            %th
+              Ступінь
+            %th
+              ОС
+            %th
+              1 лінія
+            %th
+              2 лінія
+            %th
+              обидва батьки
+            %th
+              обидві лінії
+        %tbody
+        - @children.each do |child|
+          %tr
+            %td{ style: 'font-size: 9px'}
+              = child.name.split(' ')[0]
+            %td{ style: 'font-size: 9px'}
+              = child.age
+            %td{ style: 'font-size: 9px'}
+              = child.sex == 'male' ? 'хлопчик' : 'дівчинка'
+            %td
+              - if child.zhyvit
+                &#10004;
+            %td
+              - if child.stul
+                &#10004;
+            %td
+              - if child.uzd
+                &#10004;
+            %td
+              - if child.fpk
+                &#10004;
+            %td
+              - if child.disbakterioz
+                &#10004;
+            %td{ style: 'font-size: 9px'}
+              - if child.skt_level > 0
+                = child.skt_level
+            %td
+              - if child.spadkovist
+                &#10004;
+            %td
+              - if child.spadk_line1
+                &#10004;
+            %td
+              - if child.spadk_line2
+                &#10004;
+            %td
+              - if child.both_parents
+                &#10004;
+            %td
+              - if child.both_lines
+                &#10004;
+    %td
+      &nbsp;
+      &nbsp;
+      &nbsp;
+    %td
+      %table.table.table-striped
+        %thead{ style: 'font-size: 9px'}
+          %tr
+            %th
+            %th
+            %th
+            %th{ colspan: 5 }
+              Розлади ШКТ
+            %th
+            %th{ colspan: 5 }
+              Обтяжена спадковість
+          %tr
+            %th
+              ПІБ
+            %th
+              Вік
+            %th
+              Стать
+            %th
+              Живіт
+            %th
+              Стул
+            %th
+              УЗД
+            %th
+              ФПК/ДЖВШ
+            %th
+              Дисбактеріоз
+            %th
+              Ступінь
+            %th
+              ОС
+            %th
+              1 лінія
+            %th
+              2 лінія
+            %th
+              обидва батьки
+            %th
+              обидві лінії
+        %tbody
+        - @children.each do |child|
+          %tr
+            %td{ style: 'font-size: 9px'}
+              = child.name.split(' ')[0]
+            %td{ style: 'font-size: 9px'}
+              = child.age
+            %td{ style: 'font-size: 9px'}
+              = child.sex == 'male' ? 'хлопчик' : 'дівчинка'
+            %td
+              - if child.zhyvit
+                &#10004;
+            %td
+              - if child.stul
+                &#10004;
+            %td
+              - if child.uzd
+                &#10004;
+            %td
+              - if child.fpk
+                &#10004;
+            %td
+              - if child.disbakterioz
+                &#10004;
+            %td{ style: 'font-size: 9px'}
+              - if child.skt_level > 0
+                = child.skt_level
+            %td
+              - if child.spadkovist
+                &#10004;
+            %td
+              - if child.spadk_line1
+                &#10004;
+            %td
+              - if child.spadk_line2
+                &#10004;
+            %td
+              - if child.both_parents
+                &#10004;
+            %td
+              - if child.both_lines
+                &#10004;
+
+.container
+  .row
+    .col-md-12
+      content

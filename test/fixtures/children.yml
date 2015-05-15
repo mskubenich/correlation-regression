@@ -1,0 +1,35 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  skt_level: MyString
+  integer: MyString
+  age: 1
+  sex: MyString
+  name: MyString
+  zhyvit: false
+  stul: false
+  uzd: false
+  fpk: false
+  disbakterioz: false
+  spadkovist: false
+  spadk_line1: false
+  spadk_line2: false
+  both_parents: false
+  both_lines: false
+
+two:
+  skt_level: MyString
+  integer: MyString
+  age: 1
+  sex: MyString
+  name: MyString
+  zhyvit: false
+  stul: false
+  uzd: false
+  fpk: false
+  disbakterioz: false
+  spadkovist: false
+  spadk_line1: false
+  spadk_line2: false
+  both_parents: false
+  both_lines: false
