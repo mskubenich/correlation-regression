@@ -1,6 +1,22 @@
 .container
   .row
     .col-md-12
+      = form_tag home_path do
+        %table
+          %tr
+            %td{ style: 'padding: 2px; text-align: right'}
+              Стать:
+            %td{ style: 'padding: 2px'}
+              = select_tag 'sex', options_for_select([['Хлопчики', 'male'], ['Дівчатка', 'female'], ['Всі', 'all']], params[:sex] || 'all'), class: 'form-control'
+          %tr
+            %td{ style: 'padding: 2px; text-align: right'}
+              Розлади ШКТ:
+            %td{ style: 'padding: 2px'}
+              = select_tag 'rozlad_skt', options_for_select([['Живіт', 'zhyvit'], ['Стул', 'stul'], ['УЗД', 'uzd'], ['ФПК/ДЖВШ', 'fpk'], ['Дисбактеріоз', 'disbakterioz'], ['Всі', 'all']], params[:rozlad_skt] || 'all'), class: 'form-control'
+        %br
+        = submit_tag 'Порахувати', class: 'btn'
+  .row
+    .col-md-12
       %h2 Основна група
       %table.table.table-striped
         %thead{ style: 'font-size: 9px'}
