@@ -1,6 +1,7 @@
 class PagesController < ApplicationController
   def index
-    @children = Child.all
+    @main_children = Child.where(group: 'main').order('id asc')
+    @control_children = Child.where(group: 'control').order('id asc')
   end
 
   def show

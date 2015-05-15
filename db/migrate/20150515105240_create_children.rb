@@ -16,6 +16,10 @@ class CreateChildren < ActiveRecord::Migration
       t.boolean :spadk_line2
       t.boolean :both_parents
       t.boolean :both_lines
+      t.string :group
+      t.boolean :risk_factor_AR
+      t.boolean :risk_factor_BA
+      t.boolean :risk_factor_Rasp
 
       t.timestamps null: false
     end

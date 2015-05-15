@@ -14,23 +14,27 @@
 ActiveRecord::Schema.define(version: 20150515105240) do
 
   create_table "children", force: :cascade do |t|
-    t.integer  "skt_level",    limit: 4
-    t.string   "integer",      limit: 255
-    t.integer  "age",          limit: 4
-    t.string   "sex",          limit: 255
-    t.string   "name",         limit: 255
-    t.boolean  "zhyvit",       limit: 1
-    t.boolean  "stul",         limit: 1
-    t.boolean  "uzd",          limit: 1
-    t.boolean  "fpk",          limit: 1
-    t.boolean  "disbakterioz", limit: 1
-    t.boolean  "spadkovist",   limit: 1
-    t.boolean  "spadk_line1",  limit: 1
-    t.boolean  "spadk_line2",  limit: 1
-    t.boolean  "both_parents", limit: 1
-    t.boolean  "both_lines",   limit: 1
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.integer  "skt_level",        limit: 4
+    t.string   "integer",          limit: 255
+    t.integer  "age",              limit: 4
+    t.string   "sex",              limit: 255
+    t.string   "name",             limit: 255
+    t.boolean  "zhyvit",           limit: 1
+    t.boolean  "stul",             limit: 1
+    t.boolean  "uzd",              limit: 1
+    t.boolean  "fpk",              limit: 1
+    t.boolean  "disbakterioz",     limit: 1
+    t.boolean  "spadkovist",       limit: 1
+    t.boolean  "spadk_line1",      limit: 1
+    t.boolean  "spadk_line2",      limit: 1
+    t.boolean  "both_parents",     limit: 1
+    t.boolean  "both_lines",       limit: 1
+    t.string   "group",            limit: 255
+    t.boolean  "risk_factor_AR",   limit: 1
+    t.boolean  "risk_factor_BA",   limit: 1
+    t.boolean  "risk_factor_Rasp", limit: 1
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
 end
