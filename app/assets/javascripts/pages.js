@@ -1,5 +1,5 @@
-window.draw_chart = function () {
-    $('#container').highcharts({
+window.draw_chart = function (container_selector, options) {
+    $(container_selector).highcharts({
         chart: {
             zoomType: 'xy'
         },
@@ -7,7 +7,7 @@ window.draw_chart = function () {
             text: 'Залежність випадків патології ШКТ від віку'
         },
         xAxis: [{
-            categories: ['1-12', '13-24', '25-36', '37-46'],
+            categories: options.cohorts,
             crosshair: true
         }],
         yAxis: [{ // Primary yAxis
@@ -29,14 +29,14 @@ window.draw_chart = function () {
         series: [{
             name: 'Кількість випадків патоголії ШКТ',
             type: 'column',
-            data: [31, 22, 9, 4],
+            data: options.cases,
             tooltip: {
             }
 
         }, {
             name: 'Кількість передбачених випадків патоголії ШКТ',
             type: 'spline',
-            data: [37, 25, 13, 2],
+            data: options.cases,
             tooltip: {
             }
         }]

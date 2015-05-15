@@ -184,87 +184,99 @@
               %td
                 - if child.spadkovist
                   &#10004;
-
-    .col-md-6
-      %b Основна група
-      %br
-      %table.au
-        %tr
-          %td
-            Група
-          %td
-            Вікові категорії
-          %td
-            Кількість випадків патологій ШКТ
-        - i = 0
-        - j = 0
-        - while i < @main_children.map(&:age).max
+    - if params[:cohort]
+      .col-md-6
+        %b Основна група
+        %br
+        %table.au
           %tr
             %td
-              = j += 1
+              Група
             %td
-              = "#{ i + 1 } - #{ i + params[:cohort].to_i }"
+              Вікові категорії
             %td
-              = @main_children.select{|child| child.age >= (i + 1) && child.age <= i+params[:cohort].to_i }.count
-          - i += params[:cohort].to_i
+              Кількість випадків патологій ШКТ
+          - i = 0
+          - j = 0
+          - options = {cohorts: [], cases: [], groups: []}
+          - while i < @main_children.map(&:age).max
+            %tr
+              %td
+                - options[:groups] << j + 1
+                = j += 1
+              %td
+                - cohort = "#{ i + 1 } - #{ i + params[:cohort].to_i }"
+                = cohort
+                - options[:cohorts] << cohort
+              %td
+                - count =  @main_children.select{|child| child.age >= (i + 1) && child.age <= i+params[:cohort].to_i }.count
+                = count
+                - options[:cases] << count
+            - i += params[:cohort].to_i
+        %br
+          = options
+        %br
+          #main-container
+          :javascript
+            draw_chart('#main-container', JSON.parse('#{ options.to_json }'));
+        %br
+        %b
+          Висновок: У
+          = 'дітей' if params[:sex] == 'all'
+          = 'хлопчиків' if params[:sex] == 'male'
+          = 'дівчаток' if params[:sex] == 'female'
+          - if params[:rozlad_skt] != 'all'
+            = { 'zhyvit' => 'з розладом живота', 'stul' => 'з розладом стулу', 'uzd' => 'з УЗД', 'fpk' => 'з ФПК/ДЖВШ', 'disbakterioz' => 'з дисбактеріозом'}[params[:rozlad_skt]]
+          - else
+            з розладом ШКТ
+          - if params[:skt_level] != 'all'
+            = "з #{ params[:skt_level] } ступенем"
+          - if params[:spadk] != 'all'
+            з обтяженою спадковістю
+            - if params[:spadk] != 'spadkovist'
+              (
+              = { 'spadk_line1' => '1 лінія', 'spadk_line2' => '2 лінія', 'both_parents' => 'обидва батьки', 'both_lines' => 'обидві лінії'}[params[:spadk]]
+              )
+          - if params[:risk] != 'all'
+            з фактором ризику
+            = { 'risk_factor_AR' => 'АР', 'risk_factor_BA' => 'БА', 'risk_factor_Rasp' => 'Респіраторному алергозу'}[params[:risk]]
+          кількість випадків
 
-      %br
-      %b
-        Висновок: У
-        = 'дітей' if params[:sex] == 'all'
-        = 'хлопчиків' if params[:sex] == 'male'
-        = 'дівчаток' if params[:sex] == 'female'
-        - if params[:rozlad_skt] != 'all'
-          = { 'zhyvit' => 'з розладом живота', 'stul' => 'з розладом стулу', 'uzd' => 'з УЗД', 'fpk' => 'з ФПК/ДЖВШ', 'disbakterioz' => 'з дисбактеріозом'}[params[:rozlad_skt]]
-        - else
-          з розладом ШКТ
-        - if params[:skt_level] != 'all'
-          = "з #{ params[:skt_level] } ступенем"
-        - if params[:spadk] != 'all'
-          з обтяженою спадковістю
-          - if params[:spadk] != 'spadkovist'
-            (
-            = { 'spadk_line1' => '1 лінія', 'spadk_line2' => '2 лінія', 'both_parents' => 'обидва батьки', 'both_lines' => 'обидві лінії'}[params[:spadk]]
-            )
-        - if params[:risk] != 'all'
-          з фактором ризику
-          = { 'risk_factor_AR' => 'АР', 'risk_factor_BA' => 'БА', 'risk_factor_Rasp' => 'Респіраторному алергозу'}[params[:risk]]
-        кількість випадків
+      .col-md-6
+        %b Контрольна група
         %br
         %br
-
-    .col-md-6
-      %b Контрольна група
-      %br
-      %br
-      %table.au
-        %tr
-          %td
-            Група
-          %td
-            Вікові категорії
-          %td
-            Кількість дітей без патології ШКТ
-        - i = 0
-        - j = 0
-        - while i < @control_children.map(&:age).max
+        %table.au
           %tr
             %td
-              = j += 1
+              Група
             %td
-              = "#{ i + 1 } - #{ i + params[:cohort].to_i }"
+              Вікові категорії
             %td
-              = @control_children.select{|child| child.age >= (i + 1) && child.age <= i+params[:cohort].to_i }.count
-          - i += params[:cohort].to_i
-      %br
+              Кількість дітей без патології ШКТ
+          - i = 0
+          - j = 0
+          - options = {cohorts: [], cases: []}
+          - while i < @control_children.map(&:age).max
+            %tr
+              %td
+                = j += 1
+              %td
+                - cohort = "#{ i + 1 } - #{ i + params[:cohort].to_i }"
+                = cohort
+                - options[:cohorts] << cohort
+              %td
+                - count = @control_children.select{|child| child.age >= (i + 1) && child.age <= i+params[:cohort].to_i }.count
+                = count
+                - options[:cases] << count
+            - i += params[:cohort].to_i
+        %br
+        #control-container
+        :javascript
+            draw_chart('#control-container', JSON.parse('#{ options.to_json }'));
+        %b
+          Висновок:
 
-    .col-md-12
-      #container
-      :javascript
-        draw_chart();
-      %b
-        Висновок:
 
 
-
-        ЧИ має значення вік, стать, обтяжена спадковість на розвиток патології ШКТ?
+          ЧИ має значення вік, стать, обтяжена спадковість на розвиток патології ШКТ?
