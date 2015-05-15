@@ -36,7 +36,7 @@ window.draw_chart = function (container_selector, options) {
         }, {
             name: 'Кількість передбачених випадків патоголії ШКТ',
             type: 'spline',
-            data: options.cases,
+            data: options.prognoz,
             tooltip: {
             }
         }]

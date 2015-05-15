@@ -185,8 +185,10 @@
                 - if child.spadkovist
                   &#10004;
     - if params[:cohort]
-      .col-md-6
-        %b Основна група
+      .col-md-6{ style: "font-size: 12px"}
+        %h2
+          %b Основна група
+          %hr
         %br
         %table.au
           %tr
@@ -214,14 +216,188 @@
                 - options[:cases] << count
             - i += params[:cohort].to_i
         %br
-          = options
+          Спочатку знайдемо характеристики випадкових величин(група і кількість дітей)
+          (вибіркове середнє і вибіркове середнє квадратичне відчилення).
+          %br
+          %br
+          Групи:
+          %table.au
+            %tr
+              %td
+              - options[:groups].each do |group|
+                %td
+              %td
+                = "∑x"
+                %sub i
+              %td
+                = raw "<span style='text-decoration: overline'>x</span>"
+            %tr
+              %td
+                x
+                %sub
+                  i
+              - options[:groups].each do |group|
+                %td
+                  = group
+              %td
+                - x_sum = options[:groups].sum
+                = x_sum
+              %td
+                - x_mean = (x_sum.to_f / options[:groups].count.to_f).round(2)
+                = x_mean
+            %tr
+              %td
+                = raw("(x<sub>i</sub>-<span style='text-decoration: overline'>x</span>)<sup>2</sup>")
+              - x_squares = []
+              - options[:groups].each do |group|
+                %td
+                  - x_squares << (group - x_mean)**2
+                  = (group - x_mean)**2
+              %td
+                = x_squares.sum
+              %td
+                - disp = (x_squares.sum / x_squares.count).round(2)
+                = disp
+
+          %br
+          Вибіркове середнє: <span style='text-decoration: overline'>x</span> =
+          = raw "∑x<sub>i</sub> / #{options[:groups].count} = #{ x_sum }/#{ options[:groups].count } = #{ x_mean }"
+          %br
+          %br
+          Вибіркова дисперсія: <span style='text-decoration: overline'>D</span><sub>x</sub> =
+          = raw "∑(x<sub>i</sub>-<span style='text-decoration: overline'>x</span>)<sup>2</sup> / n = "
+          = "#{ x_squares.sum } / #{ options[:groups].count } = #{ disp }"
+          %br
+          %br
+          Вибіркове квадратне відхилення:
+          - sig_x = Math.sqrt(disp).round(2)
+          = raw "σ<sub>x</sub> = √<span style='text-decoration: overline'>D</span><sub>x</sub> ≈ #{ sig_x }"
+          %br
+          %br
+          Кількість дітей:
+          %table.au
+            %tr
+              %td
+              - options[:cases].each do |item|
+                %td
+              %td
+                = "∑y"
+                %sub i
+              %td
+                = raw "<span style='text-decoration: overline'>y</span>"
+            %tr
+              %td
+                y
+                %sub
+                  i
+              - options[:cases].each do |item|
+                %td
+                  = item
+              %td
+                - y_sum = options[:cases].sum
+                = y_sum
+              %td
+                - y_mean = (y_sum.to_f / options[:cases].count.to_f).round(3)
+                = y_mean
+            %tr
+              %td
+                = raw("(y<sub>i</sub>-<span style='text-decoration: overline'>y</span>)<sup>2</sup>")
+              - y_squares = []
+              - options[:cases].each do |group|
+                %td
+                  - val = ((group - y_mean)**2).round(2)
+                  - y_squares << val
+                  = val
+              %td
+                = y_squares.sum.round(2)
+              %td
+                = (y_squares.sum / y_squares.count).round(2)
+
+          %br
+          Вибіркове середнє: <span style='text-decoration: overline'>y</span> =
+          = raw "∑y<sub>i</sub> / #{options[:cases].count} = #{ y_sum }/#{ options[:cases].count } = #{ y_mean }"
+          %br
+          %br
+          Вибіркова дисперсія: <span style='text-decoration: overline'>D</span><sub>y</sub> =
+          = raw "∑(y<sub>i</sub>-<span style='text-decoration: overline'>y</span>)<sup>2</sup> / n = "
+          - disp_y = y_squares.sum / options[:cases].count
+          = "#{ y_squares.sum } / #{ options[:groups].count } = #{ disp }"
+          %br
+          %br
+          Вибіркове квадратне відхилення:
+          - sig_y = Math.sqrt(disp_y).round(2)
+          = raw "σ<sub>y</sub> = √<span style='text-decoration: overline'>D</span><sub>y</sub> ≈ #{ sig_y }"
+          %br
+          %br
+          Залишилось підрахувати ∑x<sub>i</sub>y<sub>i</sub>. Результати занесемо в таблицю:
+          %br
+          %br
+          %table.au
+            %tr
+              %td
+                x<sub>i</sub>
+              - options[:groups].each do |item|
+                %td
+                  = item
+              %td
+            %tr
+              %td
+                y<sub>i</sub>
+              - options[:cases].each do |item|
+                %td
+                  = item
+              %td Сума
+            %tr
+              %td
+                x<sub>i</sub>y<sub>i</sub>
+              - x_n_y = []
+              - options[:groups].each_with_index do |item, index|
+                %td
+                  - x_n_y << item * options[:cases][index]
+                  = item * options[:cases][index]
+              %td
+                - x_n_y_sum = x_n_y.sum
+                = x_n_y_sum
+          %br
+          %br
+          = raw "∑x<sub>i</sub>y<sub>i</sub> = #{ x_n_y_sum }"
+          %br
+          %br
+          Коефіцієнт кореляції вирахуємо по формулі
+          = raw "r = (∑x<sub>i</sub>y<sub>i</sub> - n<span style='text-decoration: overline'>x</span><span style='text-decoration: overline'>y</span>) / (nσ<sub>x</sub>σ<sub>y</sub>)"
+          = raw " = (#{ x_n_y_sum } - #{options[:cases].count} * #{ x_mean } * #{ y_mean }) / (#{options[:cases].count} * #{sig_x} * #{sig_y})"
+          = raw " ≈ #{ korel_main =(( x_n_y_sum  - options[:cases].count *  x_mean  *  y_mean ) / (options[:cases].count * sig_x * sig_y)).round(3) }"
+
+          %br
+          %br
+          Рівняння регресії має вигляд:
+          y - <span style='text-decoration: overline'>y</span> =
+          r(σ<sub>y</sub>/σ<sub>x</sub>)(x-<span style='text-decoration: overline'>x</span>)
+          %br
+          = "y - #{y_mean} = #{ korel_main }(#{ sig_y } / #{ sig_x })(x - #{ x_mean })"
+          %br
+          = "y = (#{ korel_main }(#{ sig_y } / #{ sig_x }))x - (#{ korel_main }(#{ sig_y } / #{ sig_x }))#{ x_mean }) + (#{ y_mean })"
+          %br
+          = "y = #{ a = (korel_main * ( sig_y  /  sig_x )).round(3) }x - (#{ b = (korel_main * ( sig_y  /  sig_x ) * x_mean ).round(3) }) + #{ y_mean }"
+          %br
+          = "y = #{ a = (korel_main * ( sig_y  /  sig_x )).round(3) }x + #{ b = y_mean - b.round(2) }"
+
+          %br
+          %br
+          %br
+
+          - options[:prognoz] = []
+          - options[:groups].each do |group|
+            - options[:prognoz] << a*group.to_i + b
+
         %br
-          #main-container
-          :javascript
-            draw_chart('#main-container', JSON.parse('#{ options.to_json }'));
+        #main-container
+        :javascript
+          draw_chart('#main-container', JSON.parse('#{ options.to_json }'));
         %br
         %b
-          Висновок: У
+          Висновок:
+          Для
           = 'дітей' if params[:sex] == 'all'
           = 'хлопчиків' if params[:sex] == 'male'
           = 'дівчаток' if params[:sex] == 'female'
@@ -240,42 +416,239 @@
           - if params[:risk] != 'all'
             з фактором ризику
             = { 'risk_factor_AR' => 'АР', 'risk_factor_BA' => 'БА', 'risk_factor_Rasp' => 'Респіраторному алергозу'}[params[:risk]]
-          кількість випадків
+          залежність кількості випадків патологій ШКТ наступна:
 
-      .col-md-6
-        %b Контрольна група
+
+          %br
+          %br
+          - if (korel_main).abs < 0.1
+            Коефіцієнт кореляції близький до нуля - значить кількість патологій у дітей майже не залежить від віку
+          - else
+            Коефіцієнт кореляції відмінний від нуля - значить кількість патологій у дітей суттєво залежить від віку
+          %br
+          - if korel_main > 0
+            Кореляція - додатнє число значить залежність прямопропорційна. Тобто з віком кількість патологій ШКТ зростає.
+          - else
+            Кореляція - від'ємне число значить залежність оберненопропорційна. Тобто з віком кількість патологій ШКТ зменшується.
+          %br
+          %br
+
+
+      .col-md-6{ style: "font-size: 12px"}
+        %h2
+          %b Контрольна група
+          %hr
         %br
-        %br
-        %table.au
-          %tr
-            %td
-              Група
-            %td
-              Вікові категорії
-            %td
-              Кількість дітей без патології ШКТ
-          - i = 0
-          - j = 0
-          - options = {cohorts: [], cases: []}
-          - while i < @control_children.map(&:age).max
+        - if @control_children.count > 0
+          %table.au
             %tr
               %td
-                = j += 1
+                Група
               %td
-                - cohort = "#{ i + 1 } - #{ i + params[:cohort].to_i }"
-                = cohort
-                - options[:cohorts] << cohort
+                Вікові категорії
               %td
-                - count = @control_children.select{|child| child.age >= (i + 1) && child.age <= i+params[:cohort].to_i }.count
-                = count
-                - options[:cases] << count
-            - i += params[:cohort].to_i
-        %br
-        #control-container
-        :javascript
-            draw_chart('#control-container', JSON.parse('#{ options.to_json }'));
-        %b
-          Висновок:
+                Кількість дітей без патології ШКТ
+            - i = 0
+            - j = 0
+            - options = {cohorts: [], cases: [], groups: []}
+            - while i < @control_children.map(&:age).max
+              %tr
+                %td
+                  - options[:groups] << j + 1
+                  = j += 1
+                %td
+                  - cohort = "#{ i + 1 } - #{ i + params[:cohort].to_i }"
+                  = cohort
+                  - options[:cohorts] << cohort
+                %td
+                  - count = @control_children.select{|child| child.age >= (i + 1) && child.age <= i+params[:cohort].to_i }.count
+                  = count
+                  - options[:cases] << count
+              - i += params[:cohort].to_i
+          -# control calc-----------------------------------------------------------------------------------------------
+          %br
+          Спочатку знайдемо характеристики випадкових величин(група і кількість дітей)
+          (вибіркове середнє і вибіркове середнє квадратичне відчилення).
+          %br
+          %br
+          Групи:
+          %table.au
+            %tr
+              %td
+              - options[:groups].each do |group|
+                %td
+              %td
+                = "∑x"
+                %sub i
+              %td
+                = raw "<span style='text-decoration: overline'>x</span>"
+            %tr
+              %td
+                x
+                %sub
+                  i
+              - options[:groups].each do |group|
+                %td
+                  = group
+              %td
+                - x_sum = options[:groups].sum
+                = x_sum
+              %td
+                - x_mean = (x_sum.to_f / options[:groups].count.to_f).round(2)
+                = x_mean
+            %tr
+              %td
+                = raw("(x<sub>i</sub>-<span style='text-decoration: overline'>x</span>)<sup>2</sup>")
+              - x_squares = []
+              - options[:groups].each do |group|
+                %td
+                  - x_squares << (group - x_mean)**2
+                  = (group - x_mean)**2
+              %td
+                = x_squares.sum
+              %td
+                - disp = (x_squares.sum / x_squares.count).round(2)
+                = disp
+
+          %br
+          Вибіркове середнє: <span style='text-decoration: overline'>x</span> =
+          = raw "∑x<sub>i</sub> / #{options[:groups].count} = #{ x_sum }/#{ options[:groups].count } = #{ x_mean }"
+          %br
+          %br
+          Вибіркова дисперсія: <span style='text-decoration: overline'>D</span><sub>x</sub> =
+          = raw "∑(x<sub>i</sub>-<span style='text-decoration: overline'>x</span>)<sup>2</sup> / n = "
+          = "#{ x_squares.sum } / #{ options[:groups].count } = #{ disp }"
+          %br
+          %br
+          Вибіркове квадратне відхилення:
+          - sig_x = Math.sqrt(disp).round(2)
+          = raw "σ<sub>x</sub> = √<span style='text-decoration: overline'>D</span><sub>x</sub> ≈ #{ sig_x }"
+          %br
+          %br
+          Кількість дітей:
+          %table.au
+            %tr
+              %td
+              - options[:cases].each do |item|
+                %td
+              %td
+                = "∑y"
+                %sub i
+              %td
+                = raw "<span style='text-decoration: overline'>y</span>"
+            %tr
+              %td
+                y
+                %sub
+                  i
+              - options[:cases].each do |item|
+                %td
+                  = item
+              %td
+                - y_sum = options[:cases].sum
+                = y_sum
+              %td
+                - y_mean = (y_sum.to_f / options[:cases].count.to_f).round(3)
+                = y_mean
+            %tr
+              %td
+                = raw("(y<sub>i</sub>-<span style='text-decoration: overline'>y</span>)<sup>2</sup>")
+              - y_squares = []
+              - options[:cases].each do |group|
+                %td
+                  - val = ((group - y_mean)**2).round(2)
+                  - y_squares << val
+                  = val
+              %td
+                = y_squares.sum.round(2)
+              %td
+                = (y_squares.sum / y_squares.count).round(2)
+
+          %br
+          Вибіркове середнє: <span style='text-decoration: overline'>y</span> =
+          = raw "∑y<sub>i</sub> / #{options[:cases].count} = #{ y_sum }/#{ options[:cases].count } = #{ y_mean }"
+          %br
+          %br
+          Вибіркова дисперсія: <span style='text-decoration: overline'>D</span><sub>y</sub> =
+          = raw "∑(y<sub>i</sub>-<span style='text-decoration: overline'>y</span>)<sup>2</sup> / n = "
+          - disp_y = y_squares.sum / options[:cases].count
+          = "#{ y_squares.sum } / #{ options[:groups].count } = #{ disp }"
+          %br
+          %br
+          Вибіркове квадратне відхилення:
+          - sig_y = Math.sqrt(disp_y).round(2)
+          = raw "σ<sub>y</sub> = √<span style='text-decoration: overline'>D</span><sub>y</sub> ≈ #{ sig_y }"
+          %br
+          %br
+          Залишилось підрахувати ∑x<sub>i</sub>y<sub>i</sub>. Результати занесемо в таблицю:
+          %br
+          %br
+          %table.au
+            %tr
+              %td
+                x<sub>i</sub>
+              - options[:groups].each do |item|
+                %td
+                  = item
+              %td
+            %tr
+              %td
+                y<sub>i</sub>
+              - options[:cases].each do |item|
+                %td
+                  = item
+              %td Сума
+            %tr
+              %td
+                x<sub>i</sub>y<sub>i</sub>
+              - x_n_y = []
+              - options[:groups].each_with_index do |item, index|
+                %td
+                  - x_n_y << item * options[:cases][index]
+                  = item * options[:cases][index]
+              %td
+                - x_n_y_sum = x_n_y.sum
+                = x_n_y_sum
+          %br
+          %br
+          = raw "∑x<sub>i</sub>y<sub>i</sub> = #{ x_n_y_sum }"
+          %br
+          %br
+          Коефіцієнт кореляції вирахуємо по формулі
+          = raw "r = (∑x<sub>i</sub>y<sub>i</sub> - n<span style='text-decoration: overline'>x</span><span style='text-decoration: overline'>y</span>) / (nσ<sub>x</sub>σ<sub>y</sub>)"
+          = raw " = (#{ x_n_y_sum } - #{options[:cases].count} * #{ x_mean } * #{ y_mean }) / (#{options[:cases].count} * #{sig_x} * #{sig_y})"
+          = raw " ≈ #{ korel_main =(( x_n_y_sum  - options[:cases].count *  x_mean  *  y_mean ) / (options[:cases].count * sig_x * sig_y)).round(3) }"
+
+          %br
+          %br
+          Рівняння регресії має вигляд:
+          y - <span style='text-decoration: overline'>y</span> =
+          r(σ<sub>y</sub>/σ<sub>x</sub>)(x-<span style='text-decoration: overline'>x</span>)
+          %br
+          = "y - #{y_mean} = #{ korel_main }(#{ sig_y } / #{ sig_x })(x - #{ x_mean })"
+          %br
+          = "y = (#{ korel_main }(#{ sig_y } / #{ sig_x }))x - (#{ korel_main }(#{ sig_y } / #{ sig_x }))#{ x_mean }) + (#{ y_mean })"
+          %br
+          = "y = #{ a = (korel_main * ( sig_y  /  sig_x )).round(3) }x - (#{ b = (korel_main * ( sig_y  /  sig_x ) * x_mean ).round(3) }) + #{ y_mean }"
+          %br
+          = "y = #{ a = (korel_main * ( sig_y  /  sig_x )).round(3) }x + #{ b = y_mean - b.round(2) }"
+
+          %br
+          %br
+          %br
+
+          - options[:prognoz] = []
+          - options[:groups].each do |group|
+            - options[:prognoz] << a*group.to_i + b
+
+          %br
+          -# end control calc-------------------------------------------------------------------------------------------
+          %br
+          #control-container
+          :javascript
+              draw_chart('#control-container', JSON.parse('#{ options.to_json }'));
+          %b
+            Висновок:
 
 
 
