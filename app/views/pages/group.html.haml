@@ -1,0 +1,80 @@
+.container
+  .row
+    .col-md-6
+      = form_tag group_path do
+        %table
+          %tr
+            %td
+              %table
+                %tr
+                  %td{ style: 'padding: 2px; text-align: right'}
+                    Розлади ШКТ:
+                  %td{ style: 'padding: 2px'}
+                    = select_tag 'rozlad_skt', options_for_select([['Живіт', 'zhyvit'], ['Стул', 'stul'], ['УЗД', 'uzd'], ['ФПК/ДЖВШ', 'fpk'], ['Дисбактеріоз', 'disbakterioz'], ['Всі', 'all']], params[:rozlad_skt] || 'all'), class: 'form-control'
+              %br
+              = submit_tag 'Порахувати', class: 'btn'
+              %br
+              %br
+            %td{ style: 'vertical-align: top'}
+              %table
+                -#%tr
+                -#  %td
+                -#    Вивчити:
+                -#  %td
+                -#    = select_tag 'vyvchyty', options_for_select([['Розлади живота', 'zhyvit'], ['Розлади стулe', 'stul'], ['Розлади УЗД', 'uzd'], ['Розлади ФПК/ДЖВШ', 'fpk'], ['Дисбактеріоз', 'disbakterioz'], ['Всі розлади ШКТ', 'all']], params[:rozlad_skt] || 'all'), class: 'form-control'
+                %tr
+                  %td
+                    Вікові категорії по:
+                  %td
+                    = select_tag 'cohort', options_for_select((1..12).map{|i|["#{ i } місяців", i]}, params[:cohort] || 12), class: 'form-control'
+
+  .row
+    .col-md-12
+      %h4
+        %a{ 'data-toggle' => "collapse", 'data-target' => "#main", 'aria-expanded' => "false", 'aria-controls' => "main", style: 'cursor: pointer'}
+          Вибірка
+      %div.collapse#main
+        %table.table.table-striped
+          %thead{ style: 'font-size: 9px'}
+            %tr
+              %th
+              %th
+              %th{ colspan: 5 }
+                Розлади ШКТ
+            %tr
+              %th
+                ПІБ
+              %th
+                Вік
+              %th
+                Живіт
+              %th
+                Стул
+              %th
+                УЗД
+              %th
+                ФПК/ДЖВШ
+              %th
+                Дисбактеріоз
+          %tbody
+          - @main_children.each do |child|
+            %tr
+              %td{ style: 'font-size: 9px'}
+                = child.name.split(' ')[0]
+              %td{ style: 'font-size: 9px'}
+                = child.age
+              %td
+                - if child.zhyvit
+                  &#10004;
+              %td
+                - if child.stul
+                  &#10004;
+              %td
+                - if child.uzd
+                  &#10004;
+              %td
+                - if child.fpk
+                  &#10004;
+              %td
+                - if child.disbakterioz
+                  &#10004;

@@ -25,6 +25,12 @@ class PagesController < ApplicationController
     @control_children = Child.where(control_query.merge({group: 'control'})).order('id asc')
   end
 
-  def show
+  def group
+    main_query = {}
+    if params[:rozlad_skt] && params[:rozlad_skt] != 'all'
+      main_query[params[:rozlad_skt]] = true
+    end
+
+    @main_children = Child.where(main_query.merge({group: '3'})).order('id asc')
   end
 end
