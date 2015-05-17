@@ -1,0 +1,55 @@
+%table.au
+  %tr
+    %td
+    - selection.cohorts.each do |group|
+      %td
+    %td
+      = "∑#{ symbol }"
+      %sub i
+    %td
+      = raw "<span style='text-decoration: overline'>#{ symbol }</span>"
+  %tr
+    %td
+      = symbol
+      %sub
+        i
+    - selection.group_numbers.each do |group|
+      %td
+        = group
+    %td
+      = selection.send("#{ symbol }_total")
+    %td
+      = selection.send("#{ symbol }_mean").round(3)
+  %tr
+    %td
+      = raw("(#{ symbol }<sub>i</sub>-<span style='text-decoration: overline'>#{ symbol }</span>)<sup>2</sup>")
+    - selection.send("#{ symbol }_squares").each do |item|
+      %td
+        = item.round(3)
+    %td
+      = selection.send("#{ symbol }_squares_sum").round(3)
+    %td
+      = selection.send("#{ symbol }_dispersion").round(3)
+
+%br
+Вибіркове середнє:
+%span{ style: 'text-decoration: overline' }
+  = symbol
+= '='
+= raw "∑#{ symbol }<sub>i</sub> / #{ selection.cohorts.count } = #{ selection.send("#{ symbol }_total") } / #{ selection.cohorts.count } = #{ selection.send("#{ symbol }_mean").round(3) }"
+%br
+%br
+Вибіркова дисперсія:
+%span{ style: 'text-decoration: overline'}
+  D
+%sub
+  = symbol
+  = '='
+= raw "∑(#{ symbol }<sub>i</sub>-<span style='text-decoration: overline'>#{ symbol }</span>)<sup>2</sup> / n = "
+= "#{ selection.send("#{ symbol }_squares_sum").round(3) } / #{ selection.cohorts.count } = #{ selection.send("#{ symbol }_dispersion").round(3) }"
+%br
+%br
+Вибіркове квадратичне відхилення:
+= raw "σ<sub>#{ symbol }</sub> = √<span style='text-decoration: overline'>D</span><sub>#{ symbol }</sub> ≈ #{ selection.send("#{ symbol }_deviation").round(3)  }"
+%br
+%br

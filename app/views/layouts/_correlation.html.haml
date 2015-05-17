@@ -1,0 +1,21 @@
+= raw "r = (∑x<sub>i</sub>y<sub>i</sub> - n<span style='text-decoration: overline'>x</span><span style='text-decoration: overline'>y</span>) / (nσ<sub>x</sub>σ<sub>y</sub>)"
+%br
+= raw "r = (#{ selection.xy_sum } - #{ selection.cohorts.count} * #{ selection.x_mean } * #{ selection.y_mean.round(3) }) / (#{ selection.cohorts.count} * #{ selection.x_deviation.round(3) } * #{ selection.y_deviation.round(3) })"
+%br
+= raw "r ≈ #{ selection.correlation.round(3) }"
+%br
+%br
+%span{ style: 'color: red'}
+  Коефіцієнт кореляції:&nbsp;
+  = selection.correlation.round(3)
+  %br
+  - if (selection.correlation).abs < 0.1
+    Коефіцієнт кореляції близький до нуля - значить кількість патологій у дітей майже не залежить від віку
+  - else
+    Коефіцієнт кореляції відмінний від нуля - значить кількість патологій у дітей суттєво залежить від віку
+  %br
+  - if selection.correlation > 0
+    Кореляція - додатнє число значить залежність прямопропорційна. Тобто з віком кількість патологій ШКТ зростає.
+  - else
+    Кореляція - від'ємне число значить залежність оберненопропорційна. Тобто з віком кількість патологій ШКТ зменшується.
+  %br

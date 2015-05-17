@@ -1,0 +1,100 @@
+y - <span style='text-decoration: overline'>y</span> =
+r(σ<sub>y</sub>/σ<sub>x</sub>)(x-<span style='text-decoration: overline'>x</span>)
+%br
+= "y - #{ selection.y_mean.round(3) } = #{ selection.correlation.round(3) }(#{ selection.y_deviation.round(3) } / #{ selection.x_deviation.round(3) })(x - #{ selection.x_mean.round(3) })"
+%br
+= "y = (#{ selection.correlation.round(3) }(#{ selection.y_deviation.round(3) } / #{ selection.x_deviation.round(3) }))x -"
+= " (#{ selection.correlation.round(3) }(#{ selection.y_deviation.round(3)  } / #{ selection.x_deviation.round(3)  }))#{ selection.x_mean.round(3) }) + (#{ selection.y_mean.round(3) })"
+%br
+= "y = #{ (selection.correlation * ( selection.y_deviation  /  selection.x_deviation )).round(3) }x - "
+= "(#{ (selection.correlation * (  selection.y_deviation  /  selection.x_deviation ) * selection.x_mean ).round(3) }) + #{ selection.y_mean.round(3) }"
+%br
+= "y = #{ selection.regression[:b].round(3) }x + #{ selection.regression[:a].round(3) }"
+%br
+%br
+%span{ style: 'color: red'}
+  Рівняння регресії:&nbsp;
+  Y = A + BX
+  %br
+  а в нас вийшло:&nbsp
+  %br
+  = "Y = #{ selection.regression[:a].round(3)} + #{selection.regression[:b].round(3)}X"
+%br
+значить
+%br
+
+%span{ style: 'color: red'}
+  = "A = #{ selection.regression[:a].round(3)}"
+  %br
+  = "B = #{ selection.regression[:b].round(3)}"
+%br
+%br
+Ці числа не мають фізичного змісту !!! Це не вік і не не кількість патологій, а просто коефіціенти пропорційності.
+%br
+Фізичний зміст мають x - вікова група (не вік !!!) і y - кількість дітей/патологій в даній групі.
+%br
+Коефіціент A каже нам на скільки рівняння регресії піднято(чи опущено на віссю іксів)
+%br
+Коефіціент B каже нам на скільки рівняння регресії нахилено. Фактично це фізична швидкість. Тобто як швидко кількість патологі зменшується з віком.
+%br
+- if selection.correlation < 0
+  Який висновок можна зробити?
+  %br
+  Продовжимо рфвняння регресії так щоб воно пересіклося з віссю X
+  %br
+  В цьому випадку Y буде рівний 0
+  %br
+  %br
+  Y = 0
+  %br
+  %br
+  яка буде в нас в цій точці вікова група(Y) ?
+  %br
+  Підставляємо наш Y = 0 у рівняння
+  %br
+  %br
+  = "#{ selection.regression[:a].round(3)} + #{selection.regression[:b].round(3)}X = 0"
+  %br
+  = "#{selection.regression[:b].round(3) * -1 }X = #{ selection.regression[:a].round(3)}"
+  %br
+  = "X = #{ selection.regression[:a].round(3)} / #{selection.regression[:b].round(3) * -1 }"
+  %br
+  = "X = #{ value = selection.regression[:a] / selection.regression[:b].round(3) * -1 }"
+  %br
+  %br
+  це для простої регресії. а шо буде для груп ?
+  %br
+  так як група не може бути дробовим числом. бо це просто порядковий номер 1,2,3,4...
+  %br
+  заокруглюємо групу до найближчого
+  %br
+  %br
+  = "X = #{ value = value.round }"
+  %br
+  %br
+  На всякий випадок провіримо чи нема дітей в групі
+  = value
+  за прогнозом.
+  %br
+  %br
+  = "підставимо X = #{ value } в рівняння регресії."
+  %br
+  = "Y = #{ selection.regression[:a].round(3) } + (#{ selection.regression[:b].round(3) })*#{ value }= #{ (selection.regression[:a].round(3) + selection.regression[:b]*value).round(3) }"
+  %br
+  Не може бути відємна кількість дітей. Все правильно
+  %br
+  %br
+  %span{ style: 'color: red'}
+    Висновок у групі
+    = value
+    по прогнозу вже нема дітей.
+    %br
+    Шоста група - це від
+    = value * selection.cohort_size + 1
+    до
+    = value * selection.cohort_size + selection.cohort_size
+    місяців
+    %br
+    Значить діти старше
+    = value * selection.cohort_size
+    місяць уже не страждауть розладами ШКТ

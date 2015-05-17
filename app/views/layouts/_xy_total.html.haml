@@ -1,0 +1,25 @@
+%table.au
+  %tr
+    %td
+      x<sub>i</sub>
+    - selection.group_numbers.each do |item|
+      %td
+        = item
+    %td
+  %tr
+    %td
+      y<sub>i</sub>
+    - selection.y_data.each do |item|
+      %td
+        = item
+    %td Сума
+  %tr
+    %td
+      x<sub>i</sub>y<sub>i</sub>
+    - selection.y_data.each_with_index do |item, index|
+      %td
+        = item * selection.x_data[index]
+    %td
+      = selection.xy_sum
+%br
+= raw "∑x<sub>i</sub>y<sub>i</sub> = #{ selection.xy_sum }"

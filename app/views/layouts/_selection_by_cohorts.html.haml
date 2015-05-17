@@ -1,0 +1,16 @@
+%table.au
+  %tr
+    %td
+      Група
+    %td
+      Вікові категорії
+    %td
+      Кількість випадків патологій ШКТ
+  - selection.group_numbers.each_with_index do |group_number, i|
+    %tr
+      %td
+        = group_number
+      %td
+        = selection.cohorts[i]
+      %td
+        = selection.frequencies[i]

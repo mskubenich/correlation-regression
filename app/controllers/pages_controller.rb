@@ -31,6 +31,7 @@ class PagesController < ApplicationController
       main_query[params[:rozlad_skt]] = true
     end
 
-    @main_children = Child.where(main_query.merge({group: '3'})).order('id asc')
+    @children = Child.where(main_query.merge({group: '3'})).order('id asc')
+    @selection = Selection.new @children.map(&:age), params[:cohort]
   end
 end
