@@ -128,7 +128,7 @@ class Selection
           forecast_data: extended_forecast_data
       }
     rescue
-      
+
     end
   end
 

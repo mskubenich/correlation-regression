@@ -34,7 +34,7 @@
                   %td
                     Вікові категорії по:
                   %td
-                    = select_tag 'cohort', options_for_select((1..12).map{|i|["#{ i } місяців", i]}, params[:cohort] || 12), class: 'form-control'
+                    = select_tag 'cohort', options_for_select((1..24).map{|i|["#{ i } місяців", i]}, params[:cohort] || 12), class: 'form-control'
                 %tr
                   %td{ style: 'padding: 2px; text-align: right'}
                     Обтяжена спадковість:
