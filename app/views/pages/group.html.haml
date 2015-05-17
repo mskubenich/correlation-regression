@@ -118,3 +118,12 @@
             #regression-chart
             :javascript
                 draw_chart('#regression-chart', JSON.parse('#{ @selection.regression_chart.to_json }'));
+
+            %br
+            Гістограма
+            #gistogramm-chart
+            :javascript
+                draw_gistogramm('#gistogramm-chart', JSON.parse('#{ @selection.regression_chart.to_json }'));
+            #3dgistogramm-chart
+            :javascript
+                draw3d_gistogramm('#3dgistogramm-chart', JSON.parse('#{ @selection.regression_chart.to_json }'));

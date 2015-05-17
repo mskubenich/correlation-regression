@@ -2,6 +2,5 @@
 #= require jquery_ujs
 #= require bootstrap
 #= require highcharts
-#= require highcharts/highcharts-more
-#= require highcharts/modules/exporting
+#= require 3d
 #= require_tree .

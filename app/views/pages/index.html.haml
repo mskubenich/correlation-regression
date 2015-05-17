@@ -253,10 +253,24 @@
             #regression-chart
             :javascript
                 draw_chart('#regression-chart', JSON.parse('#{ @main_selection.regression_chart.to_json }'));
+            Гістограма
+            #gistogramm-chart
+            :javascript
+                draw_gistogramm('#gistogramm-chart', JSON.parse('#{ @main_selection.regression_chart.to_json }'));
+            #3dgistogramm-chart
+            :javascript
+                draw3d_gistogramm('#3dgistogramm-chart', JSON.parse('#{ @main_selection.regression_chart.to_json }'));
           .col-md-6
             #cregression-chart
             :javascript
                 draw_chart('#cregression-chart', JSON.parse('#{ @control_selection.regression_chart.to_json }'));
+            Гістограма
+            #cgistogramm-chart
+            :javascript
+                draw_chart('#cgistogramm-chart', JSON.parse('#{ @control_selection.regression_chart.to_json }'));
+            #3dgistogramm-chart2
+            :javascript
+                draw3d_gistogramm('#3dgistogramm-chart2', JSON.parse('#{ @control_selection.regression_chart.to_json }'));
       .col-md-6
         %b
           Висновок:
