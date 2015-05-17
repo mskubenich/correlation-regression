@@ -23,6 +23,11 @@ class PagesController < ApplicationController
 
     @main_children = Child.where(main_query.merge({group: 'main'})).order('id asc')
     @control_children = Child.where(control_query.merge({group: 'control'})).order('id asc')
+
+    if params[:cohort] && params[:cohort].to_i > 0
+      @main_selection = Selection.new @main_children.map(&:age), params[:cohort]
+      @control_selection = Selection.new @control_children.map(&:age), params[:cohort]
+    end
   end
 
   def group
@@ -32,6 +37,8 @@ class PagesController < ApplicationController
     end
 
     @children = Child.where(main_query.merge({group: '3'})).order('id asc')
-    @selection = Selection.new @children.map(&:age), params[:cohort]
+    if params[:cohort] && params[:cohort].to_i > 0
+      @selection = Selection.new @children.map(&:age), params[:cohort]
+    end
   end
 end

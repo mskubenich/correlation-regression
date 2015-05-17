@@ -66,10 +66,10 @@ r(σ<sub>y</sub>/σ<sub>x</sub>)(x-<span style='text-decoration: overline'>x</sp
   %br
   так як група не може бути дробовим числом. бо це просто порядковий номер 1,2,3,4...
   %br
-  заокруглюємо групу до найближчого
+  заокруглюємо групу до більшого
   %br
   %br
-  = "X = #{ value = value.round }"
+  = "X = #{ value = value.ceil }"
   %br
   %br
   На всякий випадок провіримо чи нема дітей в групі
@@ -81,7 +81,7 @@ r(σ<sub>y</sub>/σ<sub>x</sub>)(x-<span style='text-decoration: overline'>x</sp
   %br
   = "Y = #{ selection.regression[:a].round(3) } + (#{ selection.regression[:b].round(3) })*#{ value }= #{ (selection.regression[:a].round(3) + selection.regression[:b]*value).round(3) }"
   %br
-  Не може бути відємна кількість дітей. Все правильно
+  Не може бути кількість дітей менше одиниці. Все правильно
   %br
   %br
   %span{ style: 'color: red'}
@@ -91,11 +91,11 @@ r(σ<sub>y</sub>/σ<sub>x</sub>)(x-<span style='text-decoration: overline'>x</sp
     %br
     = value
     група - це від
-    = value * selection.cohort_size
+    = (value - 1) * selection.cohort_size + 1
     до
-    = value * selection.cohort_size + selection.cohort_size
+    = (value - 1)* selection.cohort_size + selection.cohort_size
     місяців
     %br
     Значить діти старше
-    = value * selection.cohort_size
-    місяць уже не страждауть розладами ШКТ
+    = (value - 1) * selection.cohort_size
+    місяців уже практично не страждають розладами ШКТ
