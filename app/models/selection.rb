@@ -96,6 +96,15 @@ class Selection
     }
   end
 
+  def regression_chart
+    {
+        cohorts: cohorts,
+        cases: frequencies,
+        groups: group_numbers,
+        prognoz: group_numbers.map{|g| regression[:b]*g + regression[:a]}
+    }
+  end
+
   private
 
   def parse
