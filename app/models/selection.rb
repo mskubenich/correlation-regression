@@ -105,6 +105,33 @@ class Selection
     }
   end
 
+  def extended_regression_chart
+    x = -1 * (regression[:a] / regression[:b].to_f)
+    begin
+      x = x.ceil
+      extended_group_numbers = []
+      extended_cohorts = []
+      extended_frequencies = []
+      extended_forecast_data = []
+
+      0.upto x do |i|
+        extended_cohorts << "#{ i * @cohort_size + 1 } - #{ i*@cohort_size + @cohort_size }"
+        extended_frequencies << (frequencies[i] ? frequencies[i] : 0)
+
+        extended_forecast_data << regression[:b]*i + regression[:a]
+      end
+
+      {
+          cohorts: extended_cohorts,
+          frequencies: extended_frequencies,
+          group_numbers: extended_group_numbers,
+          forecast_data: extended_forecast_data
+      }
+    rescue
+      
+    end
+  end
+
   private
 
   def parse

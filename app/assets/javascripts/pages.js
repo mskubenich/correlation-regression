@@ -29,14 +29,14 @@ window.draw_chart = function (container_selector, options) {
         series: [{
             name: 'Кількість випадків патоголії ШКТ',
             type: 'column',
-            data: options.cases,
+            data: options.frequencies,
             tooltip: {
             }
 
         }, {
             name: 'Кількість передбачених випадків патоголії ШКТ',
             type: 'spline',
-            data: options.prognoz,
+            data: options.forecast_data,
             tooltip: {
             }
         }]
