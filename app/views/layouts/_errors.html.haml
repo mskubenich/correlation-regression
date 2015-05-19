@@ -1,0 +1,87 @@
+S<sub>e</sub><sup>2</sup> - (означає залишкове відхилення регресії, що являє собою оцінку дисперсії σ<sub>y</sub> в тому випадку якщо модель вірна).
+%br
+%br
+S<sub>e</sub><sup>2</sup> = ∑(y-<span style='text-decoration: overline'>y</span>)<sup>2</sup> / n-2 =
+= "#{ selection.send("y_squares_sum").round(3) } / #{ selection.group_numbers.count }-2 = "
+= "#{ selection.se2.round(3) }"
+%br
+%br
+Стандартні похибки коефіціентів кореляції:
+%br
+%br
+S<sub>A</sub> = S<sub>e</sub>(√(1/n + <span style='text-decoration: overline'>x</span><sup>2</sup>/∑(x-<span style='text-decoration: overline'>x</span>)<sup>2</sup>))
+%br
+S<sub>A</sub> =
+= raw "#{ selection.se.round(3) }(√(1/#{ selection.group_numbers.count } + #{ selection.x_mean}<sup>2</sup>/#{ selection.y_squares_sum.round(3) })"
+%br
+S<sub>A</sub> =
+= selection.sa.round(3)
+%br
+%br
+A =
+= "#{ selection.regression[:a] } ± #{ selection.sa.round(3) }t "
+%br
+%span{style: 'color: red'}
+  A =
+  = "#{ selection.regression[:a] } ± #{ (selection.sa* selection.student).round(3)  }"
+%br
+%br
+S<sub>B</sub> = S<sub>e</sub>(√(1/∑(x-<span style='text-decoration: overline'>x</span>)<sup>2</sup>))
+%br
+S<sub>B</sub> =
+= "#{ selection.se.round(3) }(√(1/#{ selection.y_squares_sum.round(3) })"
+%br
+S<sub>B</sub> =
+= selection.sb.round(3)
+%br
+%br
+B =
+= "#{ selection.regression[:b] } ± #{ selection.sb.round(3) }t "
+%br
+%span{style: 'color: red'}
+  B =
+  = "#{ selection.regression[:b] } ± #{ (selection.sb* selection.student).round(3)  }"
+%br
+%br
+Зазвичай істинні величини коєфіціентів невідомі. Відомі тільки їх оцінки A і B. Інакше кажучи, істинна пряма регресії може пройти інакше, ніж побудована по даним вибірки.
+Порахуємо довірчу область для лінії регресії. При будь-якому значенні x відповідні значення y розподілені нормально. Середнім є значення  рівняння регресії
+<span style='text-decoration: overline'>y</span>. Невизначеність його оцігки характеризується стандартною похибкою регресії:
+%br
+%br
+S<sub><span style='text-decoration: overline'>y</span></sub> = S<sub>e</sub>(√(1/n + (x-<span style='text-decoration: overline'>x</span>)<sup>2</sup>/∑(x<sub>i</sub>-<span style='text-decoration: overline'>x</span>)<sup>2</sup>))
+%br
+%br
+Порахуємо 95% - довірчий інтервал для значення рівняння регресії в точці х:
+%br
+%br
+<span style='text-decoration: overline'>y</span> - tS<sub><span style='text-decoration: overline'>y</span></sub> < y < S<span style='text-decoration: overline'>y</span> + tS<sub><span style='text-decoration: overline'>y</span></sub>
+%br
+%br
+t - значення коефіціента Стюдента(взято з таблиці) для 95% імовірності і n-2 степенів свободи(кількість вимірів).
+%br
+%br
+%span{ style: 'color: red'}
+  t =
+  = selection.student
+%br
+%br
+Довірча облясть лінії регресії позначенаголубою лінією. З 95% - імовірністю можна стверджувати що істинна лінія знаходиться десь всередині цієї області.
+Або інакше, якщо ми зберемо аналогічні набори даних і побудуємо по них лінію регресії то в 95% випадків ці прямі не покинуть границь довірчої області.
+%br
+%br
+Зверни увагу, що деякі точки знаходяться поза довірчою областю. Це правильно, бо річ іде про довірчу область лінії регресії а не самих значень.
+%br
+%br
+Розкид значень складується з розкиду значень навколо лінії регресії і неоднозначность положення самої цієї лінії:
+%br
+%br
+S<sub>y</sub> = S<sub>e</sub>(√(1/m + 1/n + (x-<span style='text-decoration: overline'>x</span>)<sup>2</sup>/∑(x<sub>i</sub>-<span style='text-decoration: overline'>x</span>)<sup>2</sup>))
+%br
+%br
+Тут m - кратність вимірювання при даному х. 95%-відсотковий довірчий інтевал(інтервал прогнозу) для середнього з m значень буде:
+%br
+%br
+<span style='text-decoration: overline'>y</span> - tS<sub>y</sub> < y < Sy + tS<sub><span style='text-decoration: overline'>y</span></sub>
+%br
+%br
+На графіку эта 95% довірча область при m=1 обмежена червоними лініями. В цю область потрапляє 95 %  всіх можливих значень величини y досліджуваному діапазоні значень x.

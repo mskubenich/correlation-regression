@@ -108,31 +108,88 @@ class Selection
   def extended_regression_chart
     x = -1 * (regression[:a] / regression[:b].to_f)
     begin
-      x = x.ceil
+      x = x.floor
       extended_group_numbers = []
       extended_cohorts = []
       extended_frequencies = []
-      extended_forecast_data = []
 
       0.upto x do |i|
         extended_cohorts << "#{ i * @cohort_size + 1 } - #{ i*@cohort_size + @cohort_size }"
         extended_frequencies << (frequencies[i] ? frequencies[i] : 0)
-
-        extended_forecast_data << regression[:b]*i + regression[:a]
       end
 
       {
           cohorts: extended_cohorts,
           frequencies: extended_frequencies,
           group_numbers: extended_group_numbers,
-          forecast_data: extended_forecast_data
+          forecast_data: extended_forecast_data,
+          y_error_max: y_error_max,
+          y_error_min: y_error_min,
+          x_error_max: x_error_max,
+          x_error_mix: x_error_min
       }
     rescue
 
     end
   end
 
-  private
+  def extended_forecast_data
+    x = -1 * (regression[:a] / regression[:b].to_f)
+    x = x.floor
+    result = []
+    0.upto x do |i|
+      result << regression[:b]*i + regression[:a]
+    end
+    result
+  end
+
+  def se2
+    y_dispersion/(group_numbers.count - 2)
+  end
+
+  def se
+    Math.sqrt se2
+  end
+
+  def sa
+    se * Math.sqrt(1/group_numbers.count + ((x_mean**2) / x_squares_sum ))
+  end
+
+  def sb
+    se * Math.sqrt(1/ x_squares_sum)
+  end
+
+  def sy_y(x)
+    se * Math.sqrt(1/group_numbers.count + (((x - x_mean)**2) / x_squares_sum))
+  end
+
+  def y_error_max
+    result = []
+    extended_forecast_data.each_with_index{|v, i| result << (v + sy_y(i))}
+    result
+  end
+
+  def y_error_min
+    result = []
+    extended_forecast_data.each_with_index{|v, i| result << (v - sy_y(i))}
+    result
+  end
+
+  def x_error_max
+    result = []
+    extended_forecast_data.each_with_index{|v, i| result << (v + sy_x(i))}
+    result
+  end
+
+  def x_error_min
+    result = []
+    extended_forecast_data.each_with_index{|v, i| result << (v - sy_x(i))}
+    result
+  end
+
+  def sy_x(x)
+    se * Math.sqrt(1 + 1/group_numbers.count + (((x - x_mean)**2) / x_squares_sum))
+  end
 
   def parse
     return @options if @options
@@ -147,5 +204,76 @@ class Selection
       i += @cohort_size
     end
     @options = options
+  end
+
+  def student()
+    return @c if @c
+    difference = 1000
+    @c = 0
+    [
+        {count: 1, value: 6.3138 },
+        {count: 2, value: 2.9200 },
+        {count: 3, value: 2.3534 },
+        {count: 4, value: 2.1318 },
+        {count: 5, value: 2.0150 },
+        {count: 6, value: 1.9432 },
+        {count: 7, value: 1.8946 },
+        {count: 8, value: 1.8595 },
+        {count: 9, value: 1.8331 },
+        {count: 10, value: 1.8125 },
+        {count: 11, value: 1.7959 },
+        {count: 12, value: 1.7823 },
+        {count: 13, value: 1.7709 },
+        {count: 14, value: 1.7613 },
+        {count: 15, value: 1.7531 },
+        {count: 16, value: 1.7459 },
+        {count: 17, value: 1.7396 },
+        {count: 18, value: 1.7341 },
+        {count: 19, value: 1.7291 },
+        {count: 20, value: 1.7247 },
+        {count: 21, value: 1.7207 },
+        {count: 22, value: 1.7171 },
+        {count: 23, value: 1.7139 },
+        {count: 24, value: 1.7109 },
+        {count: 25, value: 1.7081 },
+        {count: 26, value: 1.7056 },
+        {count: 27, value: 1.7033 },
+        {count: 28, value: 1.7011 },
+        {count: 29, value: 1.6991 },
+        {count: 30, value: 1.6973 },
+        {count: 31, value: 1.6955 },
+        {count: 32, value: 1.6939 },
+        {count: 33, value: 1.6924 },
+        {count: 34, value: 1.6909 },
+        {count: 35, value: 1.6896 },
+        {count: 36, value: 1.6883 },
+        {count: 37, value: 1.6871 },
+        {count: 38, value: 1.6860 },
+        {count: 39, value: 1.6849 },
+        {count: 40, value: 1.6839 },
+        {count: 41, value: 1.6829 },
+        {count: 42, value: 1.6820 },
+        {count: 43, value: 1.6811 },
+        {count: 44, value: 1.6802 },
+        {count: 45, value: 1.6794 },
+        {count: 46, value: 1.6787 },
+        {count: 47, value: 1.6779 },
+        {count: 48, value: 1.6772 },
+        {count: 49, value: 1.6766 },
+        {count: 50, value: 1.6759 },
+        {count: 100, value: 1.6602 },
+        {count: 1000, value: 1.6464 }
+    ].each do |i|
+      puts '+++++++++++++++++'
+      puts "count: #{i[:count]}"
+      puts "difference: #{ (i[:count] - x_data.count - 2).abs }"
+      puts '+++++++++++++++++'
+      if (i[:count] - (x_data.count - 2)).abs < difference
+        difference = (i[:count] - (x_data.count - 2)).abs
+        @c = i[:value]
+      end
+    end
+
+    @c
   end
 end

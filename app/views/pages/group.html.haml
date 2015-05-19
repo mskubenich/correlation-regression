@@ -85,7 +85,7 @@
         %a{ 'data-toggle' => "collapse", 'data-target' => "#calculation", 'aria-expanded' => "false", 'aria-controls' => "calculation", style: 'cursor: pointer'}
           Показати розрахунки
     .container
-      .row.collapse#calculation.in
+      .row.collapse#calculation
         .col-md-12
           - if @children.count > 0
             = render partial: 'layouts/selection_by_cohorts', locals: { selection: @selection }
@@ -114,16 +114,23 @@
             Рівняння регресії має вигляд:
             %br
             = render partial: 'layouts/regression', locals: {selection: @selection }
-
-            #regression-chart
-            :javascript
-                draw_chart('#regression-chart', JSON.parse('#{ @selection.extended_regression_chart.to_json }'));
-
             %br
-            Гістограма
-            #gistogramm-chart
-            :javascript
-                draw_gistogramm('#gistogramm-chart', JSON.parse('#{ @selection.regression_chart.to_json }'));
-            #3dgistogramm-chart
-            :javascript
-                draw3d_gistogramm('#3dgistogramm-chart', JSON.parse('#{ @selection.regression_chart.to_json }'));
+            Оцінка похибок розрахунків:
+            %br
+            %br
+            = render partial: 'layouts/errors', locals: {selection: @selection }
+      .row
+        .col-md-12
+          #regression-chart
+          :javascript
+            draw_chart('#regression-chart', JSON.parse('#{ @selection.extended_regression_chart.to_json }'));
+          #regression-chart2{ style: 'height: 500px'}
+          :javascript
+            draw_chart2('#regression-chart2', JSON.parse('#{ @selection.extended_regression_chart.to_json }'));
+          Гістограма
+          #gistogramm-chart
+          :javascript
+              draw_gistogramm('#gistogramm-chart', JSON.parse('#{ @selection.regression_chart.to_json }'));
+          #3dgistogramm-chart
+          :javascript
+              draw3d_gistogramm('#3dgistogramm-chart', JSON.parse('#{ @selection.regression_chart.to_json }'));

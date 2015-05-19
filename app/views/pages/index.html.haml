@@ -253,6 +253,9 @@
             #regression-chart
             :javascript
                 draw_chart('#regression-chart', JSON.parse('#{ @main_selection.extended_regression_chart.to_json }'));
+            #regression-chart2{ style: 'height: 500px'}
+            :javascript
+                draw_chart2('#regression-chart2', JSON.parse('#{ @main_selection.extended_regression_chart.to_json }'));
             Гістограма
             #gistogramm-chart
             :javascript
@@ -264,6 +267,9 @@
             #cregression-chart
             :javascript
                 draw_chart('#cregression-chart', JSON.parse('#{ @control_selection.extended_regression_chart.to_json }'));
+            #cregression-chart2{ style: 'height: 500px'}
+            :javascript
+                draw_chart2('#cregression-chart2', JSON.parse('#{ @control_selection.extended_regression_chart.to_json }'));
             Гістограма
             #cgistogramm-chart
             :javascript
