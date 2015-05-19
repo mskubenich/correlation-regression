@@ -13,7 +13,7 @@
       = symbol
       %sub
         i
-    - selection.group_numbers.each do |group|
+    - selection.send("#{ symbol }_data").each do |group|
       %td
         = group
     %td

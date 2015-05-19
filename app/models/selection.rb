@@ -101,7 +101,7 @@ class Selection
         cohorts: cohorts,
         cases: frequencies,
         groups: group_numbers,
-        prognoz: group_numbers.map{|g| regression[:b]*g + regression[:a]}
+        prognoz: group_numbers.map{|g| regression[:b]*(g+1) + regression[:a]}
     }
   end
 
@@ -138,7 +138,7 @@ class Selection
     x = x.floor
     result = []
     0.upto x do |i|
-      result << regression[:b]*i + regression[:a]
+      result << regression[:b]*(i+1) + regression[:a]
     end
     result
   end
@@ -263,11 +263,7 @@ class Selection
         {count: 50, value: 1.6759 },
         {count: 100, value: 1.6602 },
         {count: 1000, value: 1.6464 }
-    ].each do |i|
-      puts '+++++++++++++++++'
-      puts "count: #{i[:count]}"
-      puts "difference: #{ (i[:count] - x_data.count - 2).abs }"
-      puts '+++++++++++++++++'
+    ].each do |i| 
       if (i[:count] - (x_data.count - 2)).abs < difference
         difference = (i[:count] - (x_data.count - 2)).abs
         @c = i[:value]
