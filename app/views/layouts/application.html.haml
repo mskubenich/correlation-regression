@@ -27,10 +27,14 @@
             Correlation and Regression
         .navbar-collapse.collapse.navbar-responsive-collapse
           %ul.nav.navbar-nav
-            %li{ class: "#{ 'active' if params[:action] == 'index'}"}
-              = link_to "Завдання 1", home_path
-            %li{ class: "#{ 'active' unless params[:action] == 'index'}"}
-              = link_to "Завдання 2", group_path
+            %li{ class: "#{ 'active' if action_name == 'index'}"}
+              = link_to "Осн і Контр", home_path
+            %li{ class: "#{ 'active' if action_name == 'group'}"}
+              = link_to "50", group_path
+            %li{ class: "#{ 'active' if action_name == 'index_fixed'}"}
+              = link_to "Осн і Контр(ост дітвак)", home_fixed_path
+            %li{ class: "#{ 'active' if action_name == 'group_fixed'}"}
+              = link_to "50(ост дітвак)", group_fixed_path
     = yield
     %br
     %br

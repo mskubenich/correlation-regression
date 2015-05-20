@@ -1,0 +1,302 @@
+.container
+  .row
+    .col-md-6
+      = form_tag home_fixed_path do
+        %table
+          %tr
+            %td
+              %table
+                %tr
+                  %td{ style: 'padding: 2px; text-align: right'}
+                    Стать:
+                  %td{ style: 'padding: 2px'}
+                    = select_tag 'sex', options_for_select([['Хлопчики', 'male'], ['Дівчатка', 'female'], ['Всі', 'all']], params[:sex] || 'all'), class: 'form-control'
+                %tr
+                  %td{ style: 'padding: 2px; text-align: right'}
+                    Розлади ШКТ:
+                  %td{ style: 'padding: 2px'}
+                    = select_tag 'rozlad_skt', options_for_select([['Живіт', 'zhyvit'], ['Стул', 'stul'], ['УЗД', 'uzd'], ['ФПК/ДЖВШ', 'fpk'], ['Дисбактеріоз', 'disbakterioz'], ['Всі', 'all']], params[:rozlad_skt] || 'all'), class: 'form-control'
+                %tr
+                  %td{ style: 'padding: 2px; text-align: right'}
+                    Ступінь:
+                  %td{ style: 'padding: 2px'}
+                    = select_tag 'skt_level', options_for_select([['1', 1], ['2', 2], ['3', 3], ['Всі', 'all']], params[:skt_level] || 'all'), class: 'form-control'
+              %br
+              = submit_tag 'Порахувати', class: 'btn'
+            %td{ style: 'vertical-align: top'}
+              %table
+                -#%tr
+                -#  %td
+                -#    Вивчити:
+                -#  %td
+                -#    = select_tag 'vyvchyty', options_for_select([['Розлади живота', 'zhyvit'], ['Розлади стулe', 'stul'], ['Розлади УЗД', 'uzd'], ['Розлади ФПК/ДЖВШ', 'fpk'], ['Дисбактеріоз', 'disbakterioz'], ['Всі розлади ШКТ', 'all']], params[:rozlad_skt] || 'all'), class: 'form-control'
+                %tr
+                  %td
+                    Вікові категорії по:
+                  %td
+                    = select_tag 'cohort', options_for_select((1..24).map{|i|["#{ i } місяців", i]}, params[:cohort] || 12), class: 'form-control'
+                %tr
+                  %td{ style: 'padding: 2px; text-align: right'}
+                    Обтяжена спадковість:
+                  %td{ style: 'padding: 2px'}
+                    = select_tag 'spadk', options_for_select([['З обтяженою спадковістю', 'spadkovist'], ['1 лінія', 'spadk_line1'], ['2 лінія', 'spadk_line2'], ['обидва батьки', 'both_parents'], ['обидві лінії', 'both_lines'], ['Всі', 'all']], params[:spadk] || 'all'), class: 'form-control'
+                %tr
+                  %td{ style: 'padding: 2px; text-align: right'}
+                    Фактор ризику:
+                  %td{ style: 'padding: 2px'}
+                    = select_tag 'risk', options_for_select([['АР', 'risk_factor_AR'], ['БА', 'risk_factor_BA'], ['Респіраторному алергозу', 'risk_factor_Rasp'], ['Всі', 'all']], params[:risk] || 'all'), class: 'form-control'
+
+
+  .row
+    .col-md-12
+      %h4
+        %a{ 'data-toggle' => "collapse", 'data-target' => "#main", 'aria-expanded' => "false", 'aria-controls' => "main", style: 'cursor: pointer'}
+          Показати вибірку для основної групи
+      %div.collapse#main
+        %table.table.table-striped
+          %thead{ style: 'font-size: 9px'}
+            %tr
+              %th
+              %th
+              %th
+              %th{ colspan: 5 }
+                Розлади ШКТ
+              %th
+              %th{ colspan: 5 }
+                Обтяжена спадковість
+              %th{ colspan: 3 }
+                Фактор ризику
+            %tr
+              %th
+                ПІБ
+              %th
+                Вік
+              %th
+                Стать
+              %th
+                Живіт
+              %th
+                Стул
+              %th
+                УЗД
+              %th
+                ФПК/ДЖВШ
+              %th
+                Дисбактеріоз
+              %th
+                Ступінь
+              %th
+                ОС
+              %th
+                1 лінія
+              %th
+                2 лінія
+              %th
+                обидва батьки
+              %th
+                обидві лінії
+              %th
+                АР
+              %th
+                БА
+              %th
+                Респіраторному алергозу
+          %tbody
+          - @main_children.each do |child|
+            %tr
+              %td{ style: 'font-size: 9px'}
+                = child.name.split(' ')[0]
+              %td{ style: 'font-size: 9px'}
+                = child.age
+              %td{ style: 'font-size: 9px'}
+                = child.sex == 'male' ? 'xлопчик' : 'дівчинка'
+              %td
+                - if child.zhyvit
+                  &#10004;
+              %td
+                - if child.stul
+                  &#10004;
+              %td
+                - if child.uzd
+                  &#10004;
+              %td
+                - if child.fpk
+                  &#10004;
+              %td
+                - if child.disbakterioz
+                  &#10004;
+              %td{ style: 'font-size: 9px'}
+                - if child.skt_level > 0
+                  = child.skt_level
+              %td
+                - if child.spadkovist
+                  &#10004;
+              %td
+                - if child.spadk_line1
+                  &#10004;
+              %td
+                - if child.spadk_line2
+                  &#10004;
+              %td
+                - if child.both_parents
+                  &#10004;
+              %td
+                - if child.both_lines
+                  &#10004;
+              %td
+                - if child.risk_factor_AR
+                  &#10004;
+              %td
+                - if child.risk_factor_BA
+                  &#10004;
+              %td
+                - if child.risk_factor_Rasp
+                  &#10004;
+    .col-md-12
+      %h4
+        %a{ 'data-toggle' => "collapse", 'data-target' => "#control", 'aria-expanded' => "false", 'aria-controls' => "control", style: 'cursor: pointer'}
+          Показати вибірку для контрольної групи
+      %div.collapse#control
+        %table.table.table-striped
+          %thead{ style: 'font-size: 9px'}
+            %tr
+              %th
+              %th
+              %th
+              %th
+            %tr
+              %th
+                ПІБ
+              %th
+                Вік
+              %th
+                Стать
+              %th
+                ОС
+          %tbody
+          - @control_children.each do |child|
+            %tr
+              %td{ style: 'font-size: 9px'}
+                = child.name.split(' ')[0]
+              %td{ style: 'font-size: 9px'}
+                = child.age
+              %td{ style: 'font-size: 9px'}
+                = child.sex == 'male' ? 'xлопчик' : 'дівчинка'
+              %td
+                - if child.spadkovist
+                  &#10004;
+    - if params[:cohort]
+      .col-md-12
+        %h4
+          %a{ 'data-toggle' => "collapse", 'data-target' => "#calculation", 'aria-expanded' => "false", 'aria-controls' => "calculation", style: 'cursor: pointer'}
+            Показати розрахунки
+      .container
+        .row.collapse#calculation
+          .col-md-6
+            - if @main_children.count > 0 && @main_selection
+              = render partial: 'layouts/selection_by_cohorts', locals: { selection: @main_selection }
+              %br
+              Спочатку знайдемо характеристики випадкових величин(група і кількість дітей)
+              (вибіркове середнє і вибіркове середнє квадратичне відчилення).
+              %br
+              %br
+              Вікові групи (X):
+              = render partial: 'layouts/dispersion_calculation', locals: { selection: @main_selection, symbol: 'x' }
+              %br
+              Кількість вибраних дітей (Y):
+              = render partial: 'layouts/dispersion_calculation', locals: { selection: @main_selection, symbol: 'y' }
+              %br
+              Залишилось підрахувати ∑x<sub>i</sub>y<sub>i</sub>. Результати занесемо в таблицю:
+              %br
+              %br
+              = render partial: 'layouts/xy_total', locals: {selection: @main_selection }
+              %br
+              %br
+              Коефіцієнт кореляції вирахуємо по формулі
+              %br
+              = render partial: 'layouts/correlation', locals: {selection: @main_selection }
+
+              %br
+              Рівняння регресії має вигляд:
+              %br
+              = render partial: 'layouts/regression', locals: {selection: @main_selection }
+          .col-md-6
+            - if @control_children.count > 0 && @control_selection
+              = render partial: 'layouts/selection_by_cohorts', locals: { selection: @control_selection }
+              %br
+              Спочатку знайдемо характеристики випадкових величин(група і кількість дітей)
+              (вибіркове середнє і вибіркове середнє квадратичне відчилення).
+              %br
+              %br
+              Вікові групи (X):
+              = render partial: 'layouts/dispersion_calculation', locals: { selection: @control_selection, symbol: 'x' }
+              %br
+              Кількість вибраних дітей (Y):
+              = render partial: 'layouts/dispersion_calculation', locals: { selection: @control_selection, symbol: 'y' }
+              %br
+              Залишилось підрахувати ∑x<sub>i</sub>y<sub>i</sub>. Результати занесемо в таблицю:
+              %br
+              %br
+              = render partial: 'layouts/xy_total', locals: {selection: @control_selection }
+              %br
+              %br
+              Коефіцієнт кореляції вирахуємо по формулі
+              %br
+              = render partial: 'layouts/correlation', locals: {selection: @control_selection }
+
+              %br
+              Рівняння регресії має вигляд:
+              %br
+              = render partial: 'layouts/regression', locals: {selection: @control_selection }
+        .row
+          .col-md-6
+            #regression-chart
+            :javascript
+                draw_chart('#regression-chart', JSON.parse('#{ @main_selection.extended_regression_chart.to_json }'));
+            #regression-chart2{ style: 'height: 500px'}
+            :javascript
+                draw_chart2('#regression-chart2', JSON.parse('#{ @main_selection.extended_regression_chart.to_json }'));
+            Гістограма
+            #gistogramm-chart
+            :javascript
+                draw_gistogramm('#gistogramm-chart', JSON.parse('#{ @main_selection.regression_chart.to_json }'));
+            #3dgistogramm-chart
+            :javascript
+                draw3d_gistogramm('#3dgistogramm-chart', JSON.parse('#{ @main_selection.regression_chart.to_json }'));
+          .col-md-6
+            #cregression-chart
+            :javascript
+                draw_chart('#cregression-chart', JSON.parse('#{ @control_selection.extended_regression_chart.to_json }'));
+            #cregression-chart2{ style: 'height: 500px'}
+            :javascript
+                draw_chart2('#cregression-chart2', JSON.parse('#{ @control_selection.extended_regression_chart.to_json }'));
+            Гістограма
+            #cgistogramm-chart
+            :javascript
+                draw_gistogramm('#cgistogramm-chart', JSON.parse('#{ @control_selection.regression_chart.to_json }'));
+            #3dgistogramm-chart2
+            :javascript
+                draw3d_gistogramm('#3dgistogramm-chart2', JSON.parse('#{ @control_selection.regression_chart.to_json }'));
+      .col-md-6
+        %b
+          Висновок:
+          Для
+          = 'дітей' if params[:sex] == 'all'
+          = 'хлопчиків' if params[:sex] == 'male'
+          = 'дівчаток' if params[:sex] == 'female'
+          - if params[:rozlad_skt] != 'all'
+            = { 'zhyvit' => 'з розладом живота', 'stul' => 'з розладом стулу', 'uzd' => 'з УЗД', 'fpk' => 'з ФПК/ДЖВШ', 'disbakterioz' => 'з дисбактеріозом'}[params[:rozlad_skt]]
+          - else
+            з розладом ШКТ
+          - if params[:skt_level] != 'all'
+            = "з #{ params[:skt_level] } ступенем"
+          - if params[:spadk] != 'all'
+            з обтяженою спадковістю
+            - if params[:spadk] != 'spadkovist'
+              (
+              = { 'spadk_line1' => '1 лінія', 'spadk_line2' => '2 лінія', 'both_parents' => 'обидва батьки', 'both_lines' => 'обидві лінії'}[params[:spadk]]
+              )
+          - if params[:risk] != 'all'
+            з фактором ризику
+            = { 'risk_factor_AR' => 'АР', 'risk_factor_BA' => 'БА', 'risk_factor_Rasp' => 'Респіраторному алергозу'}[params[:risk]]
+          залежність кількості випадків патологій ШКТ наступна:
